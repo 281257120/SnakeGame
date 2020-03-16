@@ -2,7 +2,7 @@
 * @Author: Marte
 * @Date:   2020-03-16 19:49:40
 * @Last Modified by:   Marte
-* @Last Modified time: 2020-03-17 01:42:15
+* @Last Modified time: 2020-03-17 02:41:16
 */
 
 'use strict';
@@ -10,14 +10,12 @@
 var game = new Game
     game.timer = null;
     game.iSpeedInterval = 100;
-    game.maxScore = 0;
-    oMSpan.innerText = game.maxScore;
-
     manageCookie.getCookie('maxScore', function (maxScore) {
         if (!maxScore) {
             oMSpan.innerText = 0;
         }else{
-            oMSpan.innerText = maxScore;
+            game.maxScore = maxScore;
+            oMSpan.innerText = game.maxScore;
         }
     });
 
@@ -52,16 +50,12 @@ game.start = function () {
 game.over = function (fromDie) {
     clearInterval(game.timer);
     if (fromDie) {
-        manageCookie.setCookie('maxScore', game.maxScore, 200);
+        manageCookie.setCookie('maxScore', game.maxScore, 20000);
         oMSpan.innerText = game.maxScore;
-        manageCookie.getCookie('maxScore', function (maxScore) {
-            oMSpan.innerText = maxScore;
-    });
         alert('new points!!')
     } else{
         alert('game over!');
     }
-
 }
 game.init()
 
@@ -92,8 +86,11 @@ function createFood (ground) {
 
 
 play.onclick = function (){
+
     game.score = 0;
+
     oSpan.innerText = game.score;
+
     ground.init()
     snake.init()
     createFood(ground);
